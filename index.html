@@ -442,7 +442,9 @@ generateWA();
 window.toggleStock = toggleStock;
 window.deleteProduct = deleteProduct;
  
-// Exponer funciones al HTML para que los botones onclick vuelvan a funcionar:
+// ... Aquí arriba termina tu función notify(message) ...
+
+// ⚠️ ESTAS LÍNEAS DEBEN IR AQUÍ, JUSTO ANTES DE </script> ⚠️
 window.tab = tab;
 window.openAdmin = openAdmin;
 window.closeLogin = closeLogin;
@@ -456,27 +458,9 @@ window.deleteProduct = deleteProduct;
 window.copyText = copyText;
 window.sendWhatsApp = sendWhatsApp;
 
-<script type="module">
- // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDMZ5TjoEhkzvl4Win0IIAXerpNWydv1WY",
-  authDomain: "electrocambioypagos.firebaseapp.com",
-  projectId: "electrocambioypagos",
-  storageBucket: "electrocambioypagos.firebasestorage.app",
-  messagingSenderId: "1030591917334",
-  appId: "1:1030591917334:web:9e52c2bb70368c3436f437",
-  measurementId: "G-NBT6R2PSXK"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+syncBusiness();
+render();
+generateWA();
+</script>
 </body>
 </html>
