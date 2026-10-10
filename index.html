@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ElectroCambio & Pagos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f8fafc}
+.hidden{display:none!important}
+button,input,select,textarea{max-width:100%}
+.card{background:white;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden}
+</style>
+</head>
+<body class="min-h-screen text-slate-800">
+
+<header class="bg-slate-900 text-white p-4 sticky top-0 z-30 shadow-lg">
+<div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+<div class="flex items-center gap-3">
+<div class="bg-indigo-600 p-3 rounded-xl"><i class="fa-solid fa-bolt text-yellow-300 text-xl"></i></div>
+<div>
+<h1 id="brand" class="font-extrabold text-lg">ElectroCambio & Pagos</h1>
+<p id="slogan-nav" class="text-xs text-indigo-300">Deja tu equipo como respaldo y estrena hoy</p>
+</div>
+</div>
+<nav class="flex flex-wrap gap-2">
+<button onclick="tab('catalog')" class="bg-indigo-600 px-3 py-2 rounded-lg text-sm">Catálogo</button>
+<button onclick="tab('about')" class="bg-slate-700 px-3 py-2 rounded-lg text-sm">Nosotros</button>
+<button onclick="tab('whatsapp')" class="bg-emerald-600 px-3 py-2 rounded-lg text-sm">WhatsApp</button>
+<button onclick="openAdmin()" class="bg-amber-400 text-slate-900 px-3 py-2 rounded-lg font-bold text-sm">Panel del dueño</button>
+</nav>
+</div>
+</header>
+
+<main class="max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
+
+<section id="catalog" class="space-y-6">
+<div class="rounded-3xl p-7 sm:p-10 text-white bg-gradient-to-r from-indigo-950 via-indigo-800 to-purple-900">
+<span class="bg-amber-400 text-slate-900 rounded-full px-3 py-1 text-xs font-extrabold">⚡ FINANCIAMIENTO FLEXIBLE</span>
+<h2 id="hero" class="text-3xl sm:text-4xl font-extrabold mt-4">ElectroCambio & Pagos</h2>
+<p id="slogan-hero" class="mt-2 text-indigo-200">Deja tu equipo como respaldo y estrena hoy.</p>
+<div class="grid sm:grid-cols-3 gap-3 mt-7">
+<div class="bg-white/10 p-4 rounded-xl">① Entrega tu equipo como respaldo</div>
+<div class="bg-white/10 p-4 rounded-xl">② Elige tu cuota semanal</div>
+<div class="bg-white/10 p-4 rounded-xl">③ Estrena tu producto</div>
+</div>
+</div>
+
+<div class="card p-4 flex flex-col sm:flex-row gap-3">
+<input id="search" oninput="render()" placeholder="Buscar productos..." class="border rounded-xl p-3 flex-1 min-w-0">
+<select id="category" onchange="render()" class="border rounded-xl p-3">
+<option value="TODOS">Todas las categorías</option>
+<option>COMBOS 4 EN 1</option>
+<option>TECNOLOGÍA & GADGETS</option>
+<option>HOGAR & BELLEZA</option>
+<option>VARIOS</option>
+</select>
+<button onclick="window.print()" class="bg-slate-800 text-white rounded-xl px-4 py-2"><i class="fa-solid fa-print"></i> Imprimir</button>
+</div>
+<div id="products" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+</section>
+
+<section id="about" class="hidden space-y-5">
+<div class="card p-8 text-center">
+<i class="fa-solid fa-bolt text-amber-500 text-4xl"></i>
+<h2 class="text-3xl font-extrabold mt-4">Sobre nosotros</h2>
+<p class="text-slate-600 mt-4">En ElectroCambio & Pagos facilitamos el acceso a la tecnología y los artículos para el hogar con opciones de pago flexibles.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-4">
+<div class="card p-6"><h3 class="font-bold text-lg">Confianza</h3><p class="text-sm mt-2">Atención cercana y transparente.</p></div>
+<div class="card p-6"><h3 class="font-bold text-lg">Flexibilidad</h3><p class="text-sm mt-2">Consulta las opciones de pago disponibles.</p></div>
+<div class="card p-6"><h3 class="font-bold text-lg">Atención directa</h3><p class="text-sm mt-2">Comunícate con nosotros por WhatsApp.</p></div>
+</div>
+</section>
+
+<section id="whatsapp" class="hidden">
+<div class="card p-5 sm:p-8 max-w-3xl mx-auto">
+<h2 class="text-2xl font-extrabold mb-3"><i class="fa-brands fa-whatsapp text-emerald-500"></i> Texto para WhatsApp</h2>
+<textarea id="wa-text" rows="18" class="w-full border rounded-xl p-4 text-sm"></textarea>
+<div class="flex flex-wrap gap-3 mt-4">
+<button onclick="copyText()" class="bg-emerald-600 text-white p-3 rounded-xl font-bold">Copiar texto</button>
+<button onclick="sendWhatsApp()" class="bg-slate-900 text-white p-3 rounded-xl font-bold">Abrir WhatsApp</button>
+</div>
+</div>
+</section>
+
+<section id="admin" class="hidden space-y-5">
+<div class="bg-amber-400 rounded-2xl p-6 flex flex-wrap justify-between items-center gap-3">
+<div><h2 class="text-2xl font-extrabold">Panel del dueño</h2><p class="text-sm">Administra tu catálogo.</p></div>
+<button onclick="logout()" class="bg-slate-900 text-white rounded-xl p-3">Cerrar sesión</button>
+</div>
+
+<div class="card p-5">
+<h3 class="font-extrabold text-xl mb-4">Información del negocio</h3>
+<div class="grid md:grid-cols-3 gap-3">
+<input id="biz-name" class="border rounded-xl p-3" placeholder="Nombre del negocio">
+<input id="biz-slogan" class="border rounded-xl p-3" placeholder="Slogan">
+<input id="biz-phone" class="border rounded-xl p-3" placeholder="WhatsApp: 573001234567">
+</div>
+<button onclick="saveBusiness()" class="mt-4 bg-indigo-600 text-white p-3 rounded-xl font-bold">Guardar información</button>
+</div>
+
+<div class="card p-5">
+<h3 class="font-extrabold text-xl mb-4">Agregar o editar producto</h3>
+<form id="product-form" class="space-y-3">
+<input id="pid" type="hidden">
+<input id="ptitle" required class="w-full border rounded-xl p-3" placeholder="Nombre del producto">
+<div class="grid sm:grid-cols-2 gap-3">
+<select id="pcategory" class="border rounded-xl p-3">
+<option>COMBOS 4 EN 1</option>
+<option>TECNOLOGÍA & GADGETS</option>
+<option>HOGAR & BELLEZA</option>
+<option>VARIOS</option>
+</select>
+<input id="psubtitle" class="border rounded-xl p-3" placeholder="Modelo o subtítulo">
+<input id="pcash" required class="border rounded-xl p-3" placeholder="Precio de contado">
+<input id="pweekly" required class="border rounded-xl p-3" placeholder="Cuota semanal">
+</div>
+<textarea id="pdetails" class="w-full border rounded-xl p-3" placeholder="Detalles del producto"></textarea>
+<label class="block text-sm font-bold">Foto del producto</label>
+<input id="pimage" type="file" accept="image/*" class="w-full border rounded-xl p-3">
+<img id="preview" class="hidden w-28 h-28 object-cover rounded-xl" alt="Vista previa">
+<label class="flex gap-2 items-center"><input id="pstock" type="checkbox" checked> Producto disponible</label>
+<div class="flex flex-wrap gap-2">
+<button class="bg-indigo-600 text-white rounded-xl p-3 font-bold" type="submit">Guardar producto</button>
+<button class="bg-slate-200 rounded-xl p-3" type="button" onclick="clearForm()">Limpiar</button>
+</div>
+</form>
+</div>
+
+<div class="card p-5">
+<div class="flex justify-between items-center gap-3 mb-4">
+<h3 class="font-extrabold text-xl">Productos guardados</h3>
+<span id="count" class="bg-indigo-100 text-indigo-700 rounded-full px-3 py-1">0</span>
+</div>
+<div id="admin-list" class="space-y-3"></div>
+</div>
+</section>
+</main>
+
+<div id="login" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4">
+<form onsubmit="login(event)" class="bg-white rounded-3xl p-7 w-full max-w-sm space-y-4">
+<div class="text-center"><i class="fa-solid fa-lock text-amber-500 text-4xl"></i><h2 class="text-2xl font-extrabold mt-3">Acceso del dueño</h2><p class="text-sm text-slate-500 mt-2">Introduce tu contraseña.</p></div>
+<input id="pin" type="password" inputmode="numeric" maxlength="20" required class="border rounded-xl p-3 w-full" placeholder="Contraseña">
+<p id="login-error" class="hidden text-red-600 text-sm">Contraseña incorrecta.</p>
+<button class="bg-slate-900 text-white rounded-xl p-3 w-full font-bold">Entrar</button>
+<button type="button" onclick="closeLogin()" class="bg-slate-200 rounded-xl p-3 w-full">Cancelar</button>
+</form>
+</div>
+
+<div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white p-4 rounded-xl shadow-lg"></div>
+
+<script>
+const DEFAULT_BUSINESS={
+ name:"ElectroCambio & Pagos",
+ slogan:"Deja tu equipo actual como respaldo y estrena hoy",
+ phone:"573001234567"
+};
+
+const DEFAULT_PRODUCTS=[
+ {id:"1",category:"COMBOS 4 EN 1",title:"Combo Kit Kuromi",subtitle:"Modelo GT-66",details:"Audífonos inalámbricos, smartwatch, consola retro y llavero.",priceCash:"120.000",priceWeekly:"15.000",image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",inStock:true},
+ {id:"2",category:"COMBOS 4 EN 1",title:"Combo Kit Minions",subtitle:"Edición especial",details:"Combo de accesorios tecnológicos.",priceCash:"120.000",priceWeekly:"15.000",image:"https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500",inStock:true},
+ {id:"3",category:"COMBOS 4 EN 1",title:"Combo Kit Stitch",subtitle:"Modelo GT-63",details:"Combo de accesorios tecnológicos.",priceCash:"120.000",priceWeekly:"15.000",image:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500",inStock:true},
+ {id:"4",category:"TECNOLOGÍA & GADGETS",title:"Smartwatch",subtitle:"Reloj inteligente",details:"Consulta los detalles y colores disponibles.",priceCash:"95.000",priceWeekly:"12.000",image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",inStock:true},
+ {id:"5",category:"TECNOLOGÍA & GADGETS",title:"Mouse inalámbrico",subtitle:"Diseño ergonómico",details:"Mouse inalámbrico para tu computador.",priceCash:"45.000",priceWeekly:"6.000",image:"https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500",inStock:true},
+ {id:"6",category:"HOGAR & BELLEZA",title:"Set de brochas",subtitle:"Set de maquillaje",details:"Set de brochas para maquillaje.",priceCash:"35.000",priceWeekly:"5.000",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500",inStock:true}
+];
+
+function load(key,fallback){
+ try{
+  const value=localStorage.getItem(key);
+  return value===null?fallback:JSON.parse(value);
+ }catch(e){return fallback;}
+}
+
+let business=load("ec_business",DEFAULT_BUSINESS);
+let products=load("ec_products",DEFAULT_PRODUCTS);
+let currentImage="";
+let ownerLoggedIn=false;
+
+function save(key,value){
+ try{
+  localStorage.setItem(key,JSON.stringify(value));
+  return true;
+ }catch(e){
+  notify("No hay espacio suficiente para guardar. Usa una imagen más pequeña.");
+  return false;
+ }
+}
+
+function safe(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function tab(name){
+ if(name==="admin"&&!ownerLoggedIn){openAdmin();return;}
+ ["catalog","about","whatsapp","admin"].forEach(id=>{
+  document.getElementById(id).classList.toggle("hidden",id!==name);
+ });
+ if(name==="whatsapp")generateWA();
+ if(name==="admin")renderAdmin();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function openAdmin(){
+ document.getElementById("login").classList.remove("hidden");
+ document.getElementById("pin").value="";
+ document.getElementById("login-error").classList.add("hidden");
+ setTimeout(()=>document.getElementById("pin").focus(),100);
+}
+
+function closeLogin(){
+ document.getElementById("login").classList.add("hidden");
+}
+
+function login(e){
+ e.preventDefault();
+ // Cambia esta contraseña antes de publicar.
+ if(document.getElementById("pin").value==="1234"){
+  ownerLoggedIn=true;
+  closeLogin();
+  tab("admin");
+  document.getElementById("biz-name").value=business.name;
+  document.getElementById("biz-slogan").value=business.slogan;
+  document.getElementById("biz-phone").value=business.phone;
+ }else{
+  document.getElementById("login-error").classList.remove("hidden");
+ }
+}
+
+function logout(){
+ ownerLoggedIn=false;
+ tab("catalog");
+ notify("Sesión cerrada.");
+}
+
+function syncBusiness(){
+ document.getElementById("brand").textContent=business.name;
+ document.getElementById("hero").textContent=business.name;
+ document.getElementById("slogan-nav").textContent=business.slogan;
+ document.getElementById("slogan-hero").textContent=business.slogan;
+ document.title=business.name;
+}
+
+function saveBusiness(){
+ if(!ownerLoggedIn)return;
+ business.name=document.getElementById("biz-name").value.trim()||DEFAULT_BUSINESS.name;
+ business.slogan=document.getElementById("biz-slogan").value.trim()||DEFAULT_BUSINESS.slogan;
+ business.phone=document.getElementById("biz-phone").value.replace(/\D/g,"");
+ if(!save("ec_business",business))return;
+ syncBusiness();
+ generateWA();
+ notify("Información guardada.");
+}
+
+function render(){
+ const query=document.getElementById("search").value.toLowerCase().trim();
+ const category=document.getElementById("category").value;
+ const filtered=products.filter(p=>
+  p.inStock&&
+  (category==="TODOS"||p.category===category)&&
+  (p.title+" "+p.subtitle+" "+p.details+" "+p.category).toLowerCase().includes(query)
+ );
+ const container=document.getElementById("products");
+ if(!filtered.length){
+  container.innerHTML='<div class="card p-8 text-center col-span-full">No se encontraron productos disponibles.</div>';
+  return;
+ }
+ container.innerHTML=filtered.map(p=>`
+ <article class="card shadow-sm flex flex-col">
+  <div class="h-48 bg-slate-100 relative">
+   <img src="${safe(p.image)}" alt="${safe(p.title)}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.display='none'">
+   <span class="absolute top-3 left-3 bg-slate-900/90 text-amber-300 rounded-full px-3 py-1 text-xs font-bold">${safe(p.category)}</span>
+  </div>
+  <div class="p-5 flex-1">
+   <h3 class="font-extrabold text-lg">${safe(p.title)}</h3>
+   <p class="text-indigo-600 text-xs font-bold mt-1">${safe(p.subtitle)}</p>
+   <p class="text-sm text-slate-500 mt-3">${safe(p.details)}</p>
+   <div class="bg-slate-50 rounded-xl p-3 mt-4 space-y-2">
+    <div class="flex justify-between gap-2"><span class="text-sm">Contado</span><strong>$${safe(p.priceCash)}</strong></div>
+    <div class="flex justify-between gap-2 border-t pt-2"><span class="text-sm text-indigo-700">Cuota semanal</span><strong class="text-indigo-700">$${safe(p.priceWeekly)}</strong></div>
+   </div>
+  </div>
+  <div class="p-5 pt-0">
+   <a target="_blank" rel="noopener" href="${waLink("Hola, me interesa "+p.title+". Precio de contado: $"+p.priceCash+". Cuota semanal: $"+p.priceWeekly+".")}" class="block text-center bg-emerald-500 hover:bg-emerald-600 text-white p-3 rounded-xl font-bold text-sm">
+   <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp</a>
+  </div>
+ </article>`).join("");
+}
+
+function renderAdmin(){
+ if(!ownerLoggedIn)return;
+ document.getElementById("count").textContent=products.length;
+ const container=document.getElementById("admin-list");
+ container.innerHTML=products.map(p=>`
+ <div class="border rounded-xl p-3 flex flex-wrap gap-3 items-center">
+  <img src="${safe(p.image)}" class="w-16 h-16 rounded-lg object-cover bg-slate-100" alt="">
+  <div class="flex-1 min-w-0">
+   <p class="font-bold break-words">${safe(p.title)}</p>
+   <p class="text-xs text-slate-500">${safe(p.category)}</p>
+   <p class="text-sm">$${safe(p.priceCash)} · Semanal $${safe(p.priceWeekly)}</p>
+   <span class="text-xs ${p.inStock?"text-emerald-600":"text-red-600"}">${p.inStock?"Disponible":"Agotado"}</span>
+  </div>
+  <div class="flex flex-wrap gap-2">
+   <button onclick="editProduct('${safe(p.id)}')" class="bg-indigo-100 text-indigo-700 rounded-lg px-3 py-2">Editar</button>
+   <button onclick="toggleStock('${safe(p.id)}')" class="bg-amber-100 rounded-lg px-3 py-2">${p.inStock?"Agotar":"Activar"}</button>
+   <button onclick="deleteProduct('${safe(p.id)}')" class="bg-red-100 text-red-700 rounded-lg px-3 py-2">Eliminar</button>
+  </div>
+ </div>`).join("");
+}
+
+function persistProducts(){
+ if(!save("ec_products",products))return;
+ render();
+ renderAdmin();
+ generateWA();
+}
+
+function clearForm(){
+ document.getElementById("product-form").reset();
+ document.getElementById("pid").value="";
+ currentImage="";
+ document.getElementById("preview").classList.add("hidden");
+ document.getElementById("preview").src="";
+}
+
+function editProduct(id){
+ if(!ownerLoggedIn)return;
+ const p=products.find(x=>x.id===id);
+ if(!p)return;
+ document.getElementById("pid").value=p.id;
+ document.getElementById("ptitle").value=p.title;
+ document.getElementById("pcategory").value=p.category;
+ document.getElementById("psubtitle").value=p.subtitle||"";
+ document.getElementById("pcash").value=p.priceCash;
+ document.getElementById("pweekly").value=p.priceWeekly;
+ document.getElementById("pdetails").value=p.details||"";
+ document.getElementById("pstock").checked=p.inStock;
+ currentImage=p.image||"";
+ const preview=document.getElementById("preview");
+ preview.src=currentImage;
+ preview.classList.toggle("hidden",!currentImage);
+ document.getElementById("product-form").scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("pimage").addEventListener("change",function(){
+ const file=this.files[0];
+ if(!file)return;
+ if(!file.type.startsWith("image/")){
+  notify("Selecciona un archivo de imagen válido.");
+  this.value="";
+  return;
+ }
+ if(file.size>700*1024){
+  notify("La foto supera 700 KB. Selecciona una imagen más pequeña.");
+  this.value="";
+  return;
+ }
+ const reader=new FileReader();
+ reader.onload=e=>{
+  currentImage=e.target.result;
+  const preview=document.getElementById("preview");
+  preview.src=currentImage;
+  preview.classList.remove("hidden");
+ };
+ reader.readAsDataURL(file);
+});
+
+document.getElementById("product-form").addEventListener("submit",function(e){
+ e.preventDefault();
+ if(!ownerLoggedIn)return;
+ const id=document.getElementById("pid").value||Date.now().toString();
+ const existing=products.find(p=>p.id===id);
+ const product={
+  id,
+  title:document.getElementById("ptitle").value.trim(),
+  category:document.getElementById("pcategory").value,
+  subtitle:document.getElementById("psubtitle").value.trim(),
+  priceCash:document.getElementById("pcash").value.trim(),
+  priceWeekly:document.getElementById("pweekly").value.trim(),
+  details:document.getElementById("pdetails").value.trim(),
+  image:currentImage||"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+  inStock:document.getElementById("pstock").checked
+ };
+ const old=products;
+ products=existing?products.map(p=>p.id===id?product:p):[product,...products];
+ if(!save("ec_products",products)){products=old;return;}
+ clearForm();
+ render();
+ renderAdmin();
+ generateWA();
+ notify("Producto guardado.");
+});
+
+function toggleStock(id){
+ if(!ownerLoggedIn)return;
+ products=products.map(p=>p.id===id?{...p,inStock:!p.inStock}:p);
+ persistProducts();
+ notify("Estado actualizado.");
+}
+
+function deleteProduct(id){
+ if(!ownerLoggedIn||!confirm("¿Seguro que quieres eliminar este producto?"))return;
+ products=products.filter(p=>p.id!==id);
+ persistProducts();
+ notify("Producto eliminado.");
+}
+
+function waLink(message){
+ const phone=String(business.phone||"").replace(/\D/g,"");
+ return "https://wa.me/"+phone+"?text="+encodeURIComponent(message);
+}
+
+function generateWA(){
+ let text="⚡ *"+business.name+"* ⚡\n";
+ text+="*"+business.slogan+"*\n\n";
+ text+="🎁 *CATÁLOGO DE PRODUCTOS*\n\n";
+ products.filter(p=>p.inStock).forEach(p=>{
+  text+="🔹 *"+p.title+"*\n";
+  if(p.subtitle)text+=p.subtitle+"\n";
+  if(p.details)text+=p.details+"\n";
+  text+="Contado: $"+p.priceCash+"\n";
+  text+="Cuota semanal: $"+p.priceWeekly+"\n\n";
+ });
+ text+="📲 Consulta por WhatsApp: https://wa.me/"+String(business.phone).replace(/\D/g,"");
+ document.getElementById("wa-text").value=text;
+}
+
+async function copyText(){
+ try{
+  await navigator.clipboard.writeText(document.getElementById("wa-text").value);
+  notify("Texto copiado.");
+ }catch(e){
+  document.getElementById("wa-text").select();
+  notify("Selecciona el texto y cópialo.");
+ }
+}
+
+function sendWhatsApp(){
+ window.open(waLink("Hola, quiero conocer los productos disponibles de "+business.name)," _blank");
+}
+
+function notify(message){
+ const el=document.getElementById("toast");
+ el.textContent=message;
+ el.classList.remove("hidden");
+ setTimeout(()=>el.classList.add("hidden"),3000);
+}
+
+syncBusiness();
+render();
+generateWA();
+</script>
+</body>
+</html>
