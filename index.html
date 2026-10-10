@@ -235,15 +235,14 @@ function syncBusiness(){
  document.title=business.name;
 }
 
-function saveBusiness(){
+async function saveBusiness(){
  if(!ownerLoggedIn)return;
  business.name=document.getElementById("biz-name").value.trim()||DEFAULT_BUSINESS.name;
  business.slogan=document.getElementById("biz-slogan").value.trim()||DEFAULT_BUSINESS.slogan;
  business.phone=document.getElementById("biz-phone").value.replace(/\D/g,"");
- if(!save("ec_business",business))return;
- syncBusiness();
- generateWA();
- notify("Información guardada.");
+ 
+ await setDoc(doc(db, "config", "business"), business);
+ notify("Información guardada en la nube.");
 }
 
 function render(){
@@ -359,13 +358,11 @@ document.getElementById("pimage").addEventListener("change",function(){
  reader.readAsDataURL(file);
 });
 
-document.getElementById("product-form").addEventListener("submit",function(e){
+document.getElementById("product-form").addEventListener("submit", async function(e){
  e.preventDefault();
  if(!ownerLoggedIn)return;
  const id=document.getElementById("pid").value||Date.now().toString();
- const existing=products.find(p=>p.id===id);
  const product={
-  id,
   title:document.getElementById("ptitle").value.trim(),
   category:document.getElementById("pcategory").value,
   subtitle:document.getElementById("psubtitle").value.trim(),
@@ -375,28 +372,26 @@ document.getElementById("product-form").addEventListener("submit",function(e){
   image:currentImage||"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
   inStock:document.getElementById("pstock").checked
  };
- const old=products;
- products=existing?products.map(p=>p.id===id?product:p):[product,...products];
- if(!save("ec_products",products)){products=old;return;}
+ await setDoc(doc(db, "productos", id), product);
  clearForm();
- render();
- renderAdmin();
- generateWA();
- notify("Producto guardado.");
+ notify("Producto guardado en la nube.");
 });
 
-function toggleStock(id){
+
+async function toggleStock(id){
  if(!ownerLoggedIn)return;
- products=products.map(p=>p.id===id?{...p,inStock:!p.inStock}:p);
- persistProducts();
- notify("Estado actualizado.");
+ const p=products.find(x=>x.id===id);
+ if(p){
+  p.inStock=!p.inStock;
+  await setDoc(doc(db, "productos", id), p);
+  notify("Estado actualizado.");
+ }
 }
 
-function deleteProduct(id){
+async function deleteProduct(id){
  if(!ownerLoggedIn||!confirm("¿Seguro que quieres eliminar este producto?"))return;
- products=products.filter(p=>p.id!==id);
- persistProducts();
- notify("Producto eliminado.");
+ await deleteDoc(doc(db, "productos", id));
+ notify("Producto eliminado de la nube.");
 }
 
 function waLink(message){
@@ -443,6 +438,10 @@ function notify(message){
 syncBusiness();
 render();
 generateWA();
+ window.saveBusiness = saveBusiness;
+window.toggleStock = toggleStock;
+window.deleteProduct = deleteProduct;
+
 <script type="module">
  // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
